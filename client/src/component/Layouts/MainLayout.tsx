@@ -4,7 +4,7 @@ import Sider from "antd/es/layout/Sider";
 import Logo from "../../assets/logo2.png";
 import { SiderItems, HeaderItems } from "../../helpers";
 import React from "react";
-import Wallet from "../../pages/Analyer/Wallet";
+import { Outlet } from "react-router-dom";
 
 const headerStyle: React.CSSProperties = {
   display: "flex",
@@ -31,11 +31,9 @@ export default function MainLayout() {
           defaultOpenKeys={["sub1"]}
           mode="inline"
           theme="dark"
-          inlineCollapsed={true}
           items={SiderItems}
         />
       </Sider>
-      {/* <Layout style={{ overflowY: "auto" }}> */}
       <Layout>
         <Header style={headerStyle} className="header-container">
           <div className="header-title">
@@ -49,7 +47,7 @@ export default function MainLayout() {
           />
         </Header>
         <Content style={contentStyle}>
-          <Wallet />
+          <Outlet />
         </Content>
       </Layout>
     </Layout>

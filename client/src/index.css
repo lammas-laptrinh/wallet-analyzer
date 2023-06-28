@@ -20,9 +20,59 @@
   --primary-color: #28b1e0;
 }
 
+.ant-pagination .ant-pagination-item-active {
+  background-color: rgba(255, 255, 255, 0.25) !important;
+  border-color: #fff;
+}
+
+.ant-pagination .ant-pagination-disabled .ant-pagination-item-link {
+  color: rgba(241, 241, 241, 0.25) !important;
+  cursor: not-allowed;
+}
+
+.ant-pagination .ant-pagination-item-link {
+  color: white !important;
+}
+
+.ant-table-wrapper .ant-table-tbody>tr>td {
+  transition: background 0.2s, border-color 0.2s;
+  border-bottom: 1px solid #32353e;
+}
+
+.ant-table-thead tr th {
+  background-color: #23252c !important;
+  color: white !important;
+}
+
+.ant-table-tbody>tr.ant-table-row:hover>td,
+.ant-table-tbody>tr>td.ant-table-cell-row-hover {
+  background-color: #23252c !important;
+  opacity: 0.8;
+}
+
+.ant-table-tbody .ant-table-row td {
+  background-color: #171921;
+  color: white;
+}
+
+.ant-pagination-item a {
+  color: white !important;
+}
 
 #wallet-container>* {
   padding: 16px 0;
+}
+
+#wallet-container::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+#wallet-container {
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
 }
 
 /* Hide scrollbar for Chrome, Safari and Opera */

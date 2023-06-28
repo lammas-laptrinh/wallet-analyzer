@@ -16,6 +16,7 @@ const titleStyles: React.CSSProperties = {
 const contentStyles: React.CSSProperties = {
   overflowX: "auto",
   width: "100%",
+  height:"100%"
 };
 
 export default function Section({
