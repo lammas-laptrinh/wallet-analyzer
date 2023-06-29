@@ -4,7 +4,7 @@ import Sider from "antd/es/layout/Sider";
 import Logo from "../../assets/logo2.png";
 import { SiderItems, HeaderItems } from "../../helpers";
 import React from "react";
-import { Outlet } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 
 const headerStyle: React.CSSProperties = {
   display: "flex",
@@ -24,7 +24,9 @@ export default function MainLayout() {
     <Layout>
       <Sider style={siderStyle}>
         <div className="header-logo">
-          <img style={{ width: 64, height: 64 }} src={Logo} alt="logo" />
+          <Link to="/">
+            <img style={{ width: 64, height: 64 }} src={Logo} alt="logo" />
+          </Link>
         </div>
         <Menu
           defaultSelectedKeys={["1"]}

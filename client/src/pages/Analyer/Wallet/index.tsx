@@ -10,6 +10,7 @@ import LineChartSimple from "../../../component/LineChart";
 import { shorterAddress } from "../../../utils";
 import PieChartDonut from "../../../component/PieChart";
 import { TableBasic } from "../../../component/Table";
+import { useNavigate } from "react-router-dom";
 
 const formItemStyle: React.CSSProperties = {
   borderWidth: 1,
@@ -37,8 +38,14 @@ const walletPortfolio = [
   { id: "1", avatarUrl: Solana, description: "Balance", title: "30000" },
   { id: "2", avatarUrl: Nft, description: "NFTs", title: "20" },
   { id: "3", avatarUrl: Coin, description: "Tokens", title: "300" },
-  { id: "4", avatarUrl: Tags, description: "Tags", title: "3" },
-  { id: "5", avatarUrl: Achivement, description: "Goals", title: "2" },
+  { id: "4", avatarUrl: Tags, description: "Tags", title: "3", to: "tags" },
+  {
+    id: "5",
+    avatarUrl: Achivement,
+    description: "Goals",
+    title: "2",
+    to: "goal",
+  },
 ];
 
 const pageData = [
@@ -52,6 +59,8 @@ const pageData = [
 ];
 
 export default function Wallet() {
+  const navigate = useNavigate();
+
   return (
     <div id="wallet-container" style={walletStyle}>
       <section>
@@ -70,8 +79,12 @@ export default function Wallet() {
         </Space>
       </section>
       <Section size={[48, 16]} title="Wallet Portfolio">
-        {walletPortfolio.map(({ avatarUrl, title, description, id }) => (
-          <Card key={id}>
+        {walletPortfolio.map(({ avatarUrl, title, description, id, to }) => (
+          <Card
+            style={{ cursor: to ? "pointer" : "" }}
+            onClick={to !== undefined ? () => navigate(to) : to}
+            key={id}
+          >
             <Card.Meta
               avatar={<img style={{ width: 64 }} alt="coin" src={avatarUrl} />}
               title={title}
@@ -108,7 +121,7 @@ export default function Wallet() {
             height: 500,
             overflowX: "auto",
             padding: 12,
-            justifyContent:'space-between'
+            justifyContent: "space-between",
           }}
         >
           <div

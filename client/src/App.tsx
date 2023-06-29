@@ -9,7 +9,9 @@ function App() {
         token: {
           colorPrimary: "#28b1e0",
           fontFamily: "Nunito",
+          colorTextDisabled:'gray'
         },
+
         components: {
           Menu: {
             colorPrimary: "#28b1e0",

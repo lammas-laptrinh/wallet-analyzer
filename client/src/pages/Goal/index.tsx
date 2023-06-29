@@ -1,48 +1,95 @@
 import {
-  SettingOutlined,
-  EditOutlined,
-  EllipsisOutlined,
-  
+  FileDoneOutlined,
+  FileSyncOutlined,
+  FileProtectOutlined,
 } from "@ant-design/icons";
-import { Card, Col, Row, Space } from "antd";
+import { Card, Col, Radio, RadioChangeEvent, Row, Space } from "antd";
 import { Typography } from "antd";
+import { TagsAchievement } from "../../helpers";
+import React from "react";
 
 const { Title, Text } = Typography;
 
+const textStyle: React.CSSProperties = {
+  color: "white",
+};
+const goalContainerStyle: React.CSSProperties = {
+  width: "100%",
+  padding: 12,
+  paddingLeft: 24,
+  paddingRight: 24,
+  overflowY: "scroll",
+  height: "85vh",
+};
+
+const optionsWithDisabled = [
+  { label: "Active", value: false },
+  { label: "Archived", value: true },
+];
+
 export default function Goal() {
+  const [isCompleted, setisCompleted] = React.useState(false);
+
+  const onChange4 = ({ target: { value } }: RadioChangeEvent) => {
+    console.log("radio4 checked", value);
+    setisCompleted(value);
+  };
   return (
-    <Space direction="vertical" style={{ width: "100%", padding: 12 }}>
-      <Title color="white" level={2}>
-        Goal
+    <Space direction="vertical" size={[0, 24]} style={goalContainerStyle}>
+      <Title style={textStyle} level={2}>
+        Goal Openings
       </Title>
-      <Text type="secondary">Ant Design (secondary)</Text>
-      <Row>
-        <Col span={6} order={4}>
-          <Card
-            cover={
-              <img
-                alt="example"
-                src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
-              />
-            }
-            actions={[
-              <SettingOutlined key="setting" />,
-              <EditOutlined key="edit" />,
-              <EllipsisOutlined key="ellipsis" />,
-            ]}
-          >
-            <Card.Meta title="test" description="test" />
-          </Card>
-        </Col>
-        <Col span={6} order={3}>
-          2 col-order-3
-        </Col>
-        <Col span={6} order={2}>
-          3 col-order-2
-        </Col>
-        <Col span={6} order={1}>
-          4 col-order-1
-        </Col>
+      <Text style={textStyle} type="secondary">
+        Finish goal to get Achicevement
+      </Text>
+      <Radio.Group
+        options={optionsWithDisabled}
+        onChange={onChange4}
+        value={isCompleted}
+        optionType="button"
+        buttonStyle="solid"
+      />
+      <Row gutter={[28, 28]}>
+        {TagsAchievement.filter((item) => item.isCompleted === isCompleted).map(
+          (item) => {
+            const statusIcon = item.isCompleted ? (
+              <FileDoneOutlined />
+            ) : (
+              <FileProtectOutlined />
+            );
+            return (
+              <Col
+                key={item.id}
+                md={8}
+                order={item.id}
+                style={{ width: "100%" }}
+              >
+                <Card
+                  cover={
+                    <img
+                      height={200}
+                      style={{ objectFit: "cover" , objectPosition:"center-bottom"}}
+                      alt="example"
+                      src={item.coverUrl}
+                    />
+                  }
+                  actions={[
+                    statusIcon,
+                    <Text type="secondary">
+                      <FileSyncOutlined key="progress" />
+                      <span style={{ marginLeft: 6 }}>2</span>
+                    </Text>,
+                  ]}
+                >
+                  <Card.Meta
+                    title={item.title}
+                    description={item.description}
+                  />
+                </Card>
+              </Col>
+            );
+          }
+        )}
       </Row>
     </Space>
   );
