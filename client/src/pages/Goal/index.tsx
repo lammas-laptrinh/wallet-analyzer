@@ -1,12 +1,10 @@
-import {
-  FileDoneOutlined,
-  FileSyncOutlined,
-  FileProtectOutlined,
-} from "@ant-design/icons";
+import { FileDoneOutlined, FileProtectOutlined } from "@ant-design/icons";
 import { Card, Col, Radio, RadioChangeEvent, Row, Space } from "antd";
 import { Typography } from "antd";
 import { TagsAchievement } from "../../helpers";
 import React from "react";
+import { getWalletPortfolio } from "../../api";
+import { useSearchParams } from "react-router-dom";
 
 const { Title, Text } = Typography;
 
@@ -29,11 +27,33 @@ const optionsWithDisabled = [
 
 export default function Goal() {
   const [isCompleted, setisCompleted] = React.useState(false);
+  const [searchParams] = useSearchParams();
+  const [goals, setGoals] = React.useState(TagsAchievement);
 
   const onChange4 = ({ target: { value } }: RadioChangeEvent) => {
     console.log("radio4 checked", value);
     setisCompleted(value);
   };
+  React.useEffect(() => {
+    const wallet = searchParams.get("wl");
+    const network = searchParams.get("network");
+    if (wallet && network) {
+      getWalletPortfolio(network, wallet).then((walletPortfolio) => {
+        if (walletPortfolio.details) {
+          const { nfts, num_nfts }: any = walletPortfolio.details;
+          if (num_nfts > 1) {
+            setGoals(
+              goals.map((goal) => {
+                goal.isCompleted =
+                  nfts.filter((nft: any) => nft.name === goal.title).length > 0;
+                return goal;
+              })
+            );
+          }
+        }
+      });
+    }
+  }, []);
   return (
     <Space direction="vertical" size={[0, 24]} style={goalContainerStyle}>
       <Title style={textStyle} level={2}>

@@ -56,7 +56,7 @@ export default function MainLayout() {
             <Button
               onClick={async () => {
                 const walletAddress = await onConnectWallet();
-                setSearchParams(`wl=${walletAddress}`);
+                setSearchParams(`wl=${walletAddress}&network=devnet`);
               }}
               icon={<WalletOutlined />}
               type="primary"

@@ -1,7 +1,7 @@
 import {
   PieChartOutlined,
   TransactionOutlined,
-  AppstoreOutlined,
+  // AppstoreOutlined,
   WalletOutlined,
   BellOutlined,
   GlobalOutlined,
@@ -16,14 +16,16 @@ function getItem(
   key: React.Key,
   icon?: React.ReactNode,
   children?: MenuItem[],
-  type?: "group"
+  // type?: "group",
+  disabled?: boolean
 ): MenuItem {
   return {
     key,
     icon,
     children,
     label,
-    type,
+    // type,
+    disabled,
   } as MenuItem;
 }
 export const HeaderItems: MenuItem[] = [
@@ -48,29 +50,35 @@ export const HeaderItems: MenuItem[] = [
 
 export const SiderItems: MenuItem[] = [
   getItem("Wallet Info", "1", <WalletOutlined />),
-  getItem("Smart money", "2", <PieChartOutlined />),
-  getItem("Transactions", "3", <TransactionOutlined />),
-  getItem("Navigation One", "sub1", <AppstoreOutlined />, [
-    getItem("Option 5", "5"),
-    getItem("Option 6", "6"),
-    getItem("Option 7", "7"),
-    getItem("Option 8", "8"),
-  ]),
-  getItem("Navigation Two", "sub2", <AppstoreOutlined />, [
-    getItem("Option 9", "9"),
-    getItem("Option 10", "10"),
-    getItem("Submenu", "sub3", null, [
-      getItem("Option 11", "11"),
-      getItem("Option 12", "12"),
-    ]),
-  ]),
+  getItem("Smart money", "2", <PieChartOutlined />, undefined, true),
+  getItem(
+    "Transactions",
+    "3",
+    <TransactionOutlined />,
+    undefined,
+    true
+  ),
+  // getItem("Navigation One", "sub1", <AppstoreOutlined />, [
+  //   getItem("Option 5", "5"),
+  //   getItem("Option 6", "6"),
+  //   getItem("Option 7", "7"),
+  //   getItem("Option 8", "8"),
+  // ]),
+  // getItem("Navigation Two", "sub2", <AppstoreOutlined />, [
+  //   getItem("Option 9", "9"),
+  //   getItem("Option 10", "10"),
+  //   getItem("Submenu", "sub3", null, [
+  //     getItem("Option 11", "11"),
+  //     getItem("Option 12", "12"),
+  //   ]),
+  // ]),
 ];
 
 export const TagsAchievement = [
   {
     id: "1",
     title: "NFT Groundbreaker",
-    description: "You has first NFT",
+    description: "You need 1 NFT to get the Tag",
     coverUrl:
       "https://image.lexica.art/full_jpg/26dc048d-05f3-4a6d-8d9a-2613eef67948",
     isCompleted: false,
@@ -78,7 +86,7 @@ export const TagsAchievement = [
   {
     id: "2",
     title: "Token Genius",
-    description: "10 token quantity greater 1",
+    description: "You need 10 token quantity greater 1 to get the tag",
     coverUrl:
       "https://image.lexica.art/full_jpg/e03a9691-bd1c-48f1-b068-31e62deed413",
     isCompleted: false,

@@ -193,7 +193,7 @@ export default function useWallet() {
       setWalletAddress(walletAddress);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchParrams.get("wl")]);
+  }, [searchParrams]);
 
   React.useEffect(() => {
     if (currentWalletAddress !== "") {
