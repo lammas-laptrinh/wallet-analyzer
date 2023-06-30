@@ -1,6 +1,9 @@
 // import "./App.css";
 import MainLayout from "./component/Layouts/MainLayout";
 import { ConfigProvider } from "antd";
+import { Buffer } from "buffer";
+window.Buffer = Buffer;
+
 
 function App() {
   return (

@@ -68,7 +68,10 @@ export default function Goal() {
                   cover={
                     <img
                       height={200}
-                      style={{ objectFit: "cover" , objectPosition:"center-bottom"}}
+                      style={{
+                        objectFit: "cover",
+                        objectPosition: "center-bottom",
+                      }}
                       alt="example"
                       src={item.coverUrl}
                     />
@@ -76,8 +79,9 @@ export default function Goal() {
                   actions={[
                     statusIcon,
                     <Text type="secondary">
-                      <FileSyncOutlined key="progress" />
-                      <span style={{ marginLeft: 6 }}>2</span>
+                      {/* <FileSyncOutlined key="progress" /> */}
+                      {/* <span style={{ marginLeft: 6 }}>0</span> */}
+                      Active
                     </Text>,
                   ]}
                 >

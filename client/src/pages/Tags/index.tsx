@@ -1,6 +1,8 @@
-import { Button, Space, Typography } from "antd";
+import { Button, Image, Space, Typography } from "antd";
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import useTags from "./useTags";
+import Loader from "../../component/Loader";
 
 const TagStyles: React.CSSProperties = {
   width: "100%",
@@ -21,102 +23,90 @@ const subTitleStyles: React.CSSProperties = {
   fontWeight: "500",
 };
 
-const images = [
-  {
-    id: "1",
-    width: "40%",
-    height: 350,
-    title: "Mint Tone",
-    src: "https://image.lexica.art/full_jpg/51179714-c528-4548-ad4a-8ab73f2d69a3",
-  },
-  {
-    id: "2",
-    width: "20%",
-    height: 200,
-    title: "Mint Tone",
-    src: "https://image.lexica.art/full_jpg/51179714-c528-4548-ad4a-8ab73f2d69a3",
-  },
-  {
-    id: "3",
-    width: "20%",
-    height: 300,
-    title: "Mint Tone",
-    src: "https://image.lexica.art/full_jpg/51179714-c528-4548-ad4a-8ab73f2d69a3",
-  },
-  {
-    id: "4",
-    width: "20%",
-    height: 120,
-
-    title: "Mint Tone",
-    src: "https://image.lexica.art/full_jpg/51179714-c528-4548-ad4a-8ab73f2d69a3",
-  },
-  {
-    id: "5",
-    width: "20%",
-    height: 210,
-
-    title: "Mint Tone",
-    src: "https://image.lexica.art/full_jpg/51179714-c528-4548-ad4a-8ab73f2d69a3",
-  },
-];
-
 export default function Tags() {
   const navigate = useNavigate();
+
   const subTitleStyles2 = { ...subTitleStyles };
   subTitleStyles2.textAlign = "left";
   const titleStyles2 = { ...titleStyles };
   titleStyles2.fontSize = "68px";
+
+  const {
+    tags,
+    isLoading,
+    isAllowMint,
+    contextHolder,
+    selectedTag,
+    handleSelectedSrc,
+    handleMintNFT,
+  } = useTags();
+
   return (
-    <Space style={TagStyles} direction="vertical">
-      <Typography.Title level={4} style={subTitleStyles} className="uppercase">
-        Digital Artist
-      </Typography.Title>
-      <Space.Compact block style={{ justifyContent: "center" }}>
-        <Typography.Text
-          onClick={() => navigate(-1)}
-          style={{
-            color: "white",
-            fontWeight: "bold",
-            cursor: "pointer",
-            fontSize: 18,
-          }}
+    <>
+      {contextHolder}
+      {isLoading && <Loader />}
+      <Space style={TagStyles} direction="vertical">
+        <Typography.Title
+          level={4}
+          style={subTitleStyles}
+          className="uppercase"
         >
-          BACK
-        </Typography.Text>
-        <Typography.Title style={titleStyles} className="uppercase">
-          MANAGE YOUR TAGS
+          Digital Artist
         </Typography.Title>
-      </Space.Compact>
-      <div className="tag-image-container" style={{ display: "flex" }}>
-        {images.map((item) => {
-          return (
-            <div
-              style={{ width: item.width, height: item.height }}
-              key={item.id}
-            >
-              <img
-                style={{ objectFit: "cover" }}
-                width="100%"
-                height="100%"
-                src={item.src}
-                alt="tags"
-              />
+        <Space.Compact block style={{ justifyContent: "center" }}>
+          <Typography.Text
+            onClick={() => navigate(-1)}
+            style={{
+              color: "white",
+              fontWeight: "bold",
+              cursor: "pointer",
+              fontSize: 18,
+            }}
+          >
+            BACK
+          </Typography.Text>
+          <Typography.Title style={titleStyles} className="uppercase">
+            MANAGE YOUR TAGS
+          </Typography.Title>
+        </Space.Compact>
+        <div className="tag-image-container" style={{ display: "flex" }}>
+          <Space
+            style={{ width: "50%", justifyContent: "center" }}
+            align="center"
+            direction="vertical"
+          >
+            <Image
+              width="100%"
+              height={300}
+              style={{ objectFit: "cover" }}
+              src={selectedTag.src}
+            />
+          </Space>
+          <Space direction="vertical" size={[0, 32]}>
+            <span>
+              <Typography.Title
+                className="uppercase"
+                style={{ color: "white", fontSize: 68, width: 350, margin: 0 }}
+              >
+                {selectedTag.title}
+              </Typography.Title>
               <Typography.Text style={{ color: "white" }} className="uppercase">
-                {item.title}
+                #{selectedTag.name}
               </Typography.Text>
-            </div>
-          );
-        })}
-      </div>
-      <Space
-        direction="horizontal"
-        style={{ justifyContent: "flex-end", marginTop: 24 }}
-      >
+            </span>
+            <Button
+              disabled={!isAllowMint}
+              onClick={handleMintNFT}
+              type="primary"
+            >
+              Mint NFT
+            </Button>
+          </Space>
+        </div>
+
         <Space
-          size={[0, 24]}
-          style={{ alignItems: "flex-end" }}
-          direction="vertical"
+          direction="horizontal"
+          style={{ justifyContent: "flex-end", marginTop: 24 }}
         >
           <div>
             <Typography.Title
@@ -127,8 +117,10 @@ export default function Tags() {
               TAGS
             </Typography.Title>
             <Space.Compact size="middle">
-              {["NFT", "TOKEN","dumb"].map((tag) => (
+              {tags.map((tag, index) => (
                 <div
+                  onClick={() => handleSelectedSrc(tag)}
+                  key={index}
                   style={{
                     borderWidth: 2,
                     borderStyle: "solid",
@@ -141,14 +133,13 @@ export default function Tags() {
                     cursor: "pointer",
                   }}
                 >
-                  #{tag}
+                  #{tag.name}
                 </div>
               ))}
             </Space.Compact>
           </div>
-          <Button type="primary">Mint NFT</Button>
         </Space>
       </Space>
-    </Space>
+    </>
   );
 }

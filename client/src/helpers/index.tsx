@@ -69,68 +69,66 @@ export const SiderItems: MenuItem[] = [
 export const TagsAchievement = [
   {
     id: "1",
-    title: "Level Up",
-    description:
-      " This tag is used to represent the completion of a level or milestone",
+    title: "NFT Groundbreaker",
+    description: "You has first NFT",
     coverUrl:
       "https://image.lexica.art/full_jpg/26dc048d-05f3-4a6d-8d9a-2613eef67948",
-    isCompleted: true,
+    isCompleted: false,
   },
   {
     id: "2",
-    title: "Mastery",
-    description:
-      "This tag is used to represent the mastery of a skill or ability",
+    title: "Token Genius",
+    description: "10 token quantity greater 1",
     coverUrl:
       "https://image.lexica.art/full_jpg/e03a9691-bd1c-48f1-b068-31e62deed413",
     isCompleted: false,
   },
-  {
-    id: "3",
-    title: "Leaderboard",
-    description: "This tag is used to a player's position on a leaderboard",
-    coverUrl:
-      "https://image.lexica.art/full_jpg/2d4b46ef-245d-4a29-a41e-61c8a2edab54",
-    isCompleted: false,
-  },
-  {
-    id: "4",
-    title: "Rare",
-    description: "This tag is used to  a rare or special achievement",
-    coverUrl:
-      "https://image.lexica.art/full_jpg/d66d99aa-b2f8-48ec-a42b-a1fa65961f4f",
-    isCompleted: false,
-  },
-  {
-    id: "8",
-    title: "Exclusive",
-    description: "This tag is only available to a select group of people",
-    coverUrl:
-      "https://image.lexica.art/full_jpg/b9b34d36-e3e7-4e9c-b354-ef4dd3c98c86",
-    isCompleted: false,
-  },
-  {
-    id: "5",
-    title: "Limited Edition",
-    description: "This tag is  only available for a limited time",
-    coverUrl:
-      "https://image.lexica.art/full_jpg/068fff49-5d59-4155-9f2c-55a60cf193c6",
-    isCompleted: false,
-  },
-  {
-    id: "6",
-    title: "Collectible",
-    description: "This tag is used to an achievement that is collectible",
-    coverUrl:
-      "https://image.lexica.art/full_jpg/1b9517b3-ef37-4c3e-a377-351eff070cff",
-    isCompleted: false,
-  },
-  {
-    id: "7",
-    title: "Soulbound",
-    description: "non-transferable",
-    coverUrl:
-      "https://image.lexica.art/full_jpg/9bb53d6a-aeff-4e4f-97f0-bf7eabcca78b",
-    isCompleted: false,
-  },
+  // {
+  //   id: "3",
+  //   title: "Leaderboard",
+  //   description: "This tag is used to a player's position on a leaderboard",
+  //   coverUrl:
+  //     "https://image.lexica.art/full_jpg/2d4b46ef-245d-4a29-a41e-61c8a2edab54",
+  //   isCompleted: false,
+  // },
+  // {
+  //   id: "4",
+  //   title: "Rare",
+  //   description: "This tag is used to  a rare or special achievement",
+  //   coverUrl:
+  //     "https://image.lexica.art/full_jpg/d66d99aa-b2f8-48ec-a42b-a1fa65961f4f",
+  //   isCompleted: false,
+  // },
+  // {
+  //   id: "8",
+  //   title: "Exclusive",
+  //   description: "This tag is only available to a select group of people",
+  //   coverUrl:
+  //     "https://image.lexica.art/full_jpg/b9b34d36-e3e7-4e9c-b354-ef4dd3c98c86",
+  //   isCompleted: false,
+  // },
+  // {
+  //   id: "5",
+  //   title: "Limited Edition",
+  //   description: "This tag is  only available for a limited time",
+  //   coverUrl:
+  //     "https://image.lexica.art/full_jpg/068fff49-5d59-4155-9f2c-55a60cf193c6",
+  //   isCompleted: false,
+  // },
+  // {
+  //   id: "6",
+  //   title: "Collectible",
+  //   description: "This tag is used to an achievement that is collectible",
+  //   coverUrl:
+  //     "https://image.lexica.art/full_jpg/1b9517b3-ef37-4c3e-a377-351eff070cff",
+  //   isCompleted: false,
+  // },
+  // {
+  //   id: "7",
+  //   title: "Soulbound",
+  //   description: "non-transferable",
+  //   coverUrl:
+  //     "https://image.lexica.art/full_jpg/9bb53d6a-aeff-4e4f-97f0-bf7eabcca78b",
+  //   isCompleted: false,
+  // },
 ];

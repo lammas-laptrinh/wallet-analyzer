@@ -12,8 +12,8 @@ import {
 
 type Item = {
   name: string;
-  receive: number;
-  send: number;
+  receiver: number;
+  sender: number;
 };
 type LineChartSimpleProps = {
   data: Array<Item>;
@@ -41,13 +41,13 @@ export default function LineChartSimple({ data }: LineChartSimpleProps) {
         <Legend />
         <Line
           type="monotone"
-          dataKey="send"
+          dataKey="sender"
           stroke="#8884d8"
           activeDot={{
             r: 8,
           }}
         />
-        <Line type="monotone" dataKey="receive" stroke="#82ca9d" />
+        <Line type="monotone" dataKey="receiver" stroke="#82ca9d" />
       </LineChart>
     </ResponsiveContainer>
   );

@@ -1,10 +1,12 @@
-import { Layout, Menu } from "antd";
+import { Button, Layout, Menu } from "antd";
 import { Header, Content } from "antd/es/layout/layout";
 import Sider from "antd/es/layout/Sider";
 import Logo from "../../assets/logo2.png";
 import { SiderItems, HeaderItems } from "../../helpers";
 import React from "react";
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useSearchParams } from "react-router-dom";
+import { WalletOutlined } from "@ant-design/icons";
+import { onConnectWallet } from "../../utils";
 
 const headerStyle: React.CSSProperties = {
   display: "flex",
@@ -20,11 +22,13 @@ const siderStyle: React.CSSProperties = {
 };
 
 export default function MainLayout() {
+  const [searchParams, setSearchParams] = useSearchParams();
+
   return (
     <Layout>
       <Sider style={siderStyle}>
         <div className="header-logo">
-          <Link to="/">
+          <Link to={{ pathname: "/", search: searchParams.toString() }}>
             <img style={{ width: 64, height: 64 }} src={Logo} alt="logo" />
           </Link>
         </div>
@@ -47,6 +51,20 @@ export default function MainLayout() {
             mode="horizontal"
             items={HeaderItems}
           />
+          (
+          {searchParams.get("wl") === null && (
+            <Button
+              onClick={async () => {
+                const walletAddress = await onConnectWallet();
+                setSearchParams(`wl=${walletAddress}`);
+              }}
+              icon={<WalletOutlined />}
+              type="primary"
+            >
+              Conenct
+            </Button>
+          )}
+          )
         </Header>
         <Content style={contentStyle}>
           <Outlet />

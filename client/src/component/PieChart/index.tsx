@@ -5,16 +5,17 @@ import {
   Pie,
   Legend,
   LabelList,
+  Cell,
 } from "recharts";
 
-const data01 = [
-  { name: "Group A", value: 400, v: 89, fill: "#57c0e8" },
-  { name: "Group B", value: 300, v: 100, fill: "#FF6565" },
-  { name: "Group C", value: 200, v: 200, fill: "#960018" },
-  { name: "Group D", value: 200, v: 20, fill: "#FC6A03" },
-  { name: "Group E", value: 278, v: 40, fill: "#DCD7A0" },
-  { name: "Group F", value: 189, v: 60, fill: "#52B2BF" },
-];
+type pieChartProps = {
+  data: Array<{
+    name: string;
+    value: number;
+    v: number;
+    fill: string;
+  }>;
+};
 
 const colors = [
   "#57c0e8",
@@ -27,17 +28,25 @@ const colors = [
   "#3CB043",
   "#028A0F",
   "#52B2BF",
+  "#fb879a",
+  "#212745",
+  "#706474",
+  "#f3eed9",
+  "#dfd9d9"
 ];
 
-export default function PieChartDonut() {
+export default function PieChartDonut({ data }: pieChartProps) {
   return (
     <ResponsiveContainer>
       <PieChart>
-        <Pie data={data01} dataKey="value" innerRadius="45%" outerRadius="80%">
+        <Pie data={data} dataKey="value" innerRadius="45%" outerRadius="80%">
+          {data.map((_, index) => (
+            <Cell key={`slice-${index}`} fill={colors[index % 10] as string} />
+          ))}
           <LabelList position="inside" />
         </Pie>
-        <Legend values="test" />
-        <Tooltip trigger="hover" />
+        <Legend />
+        <Tooltip />
       </PieChart>
     </ResponsiveContainer>
   );

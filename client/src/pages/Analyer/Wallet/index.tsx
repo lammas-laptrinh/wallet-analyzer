@@ -1,16 +1,13 @@
-import { Card, Input, Space } from "antd";
-import Coin from "../../../assets/coin.png";
-import Nft from "../../../assets/nft.png";
-import Solana from "../../../assets/solana2.png";
-import Achivement from "../../../assets/achivement.png";
-import Tags from "../../../assets/tags.png";
-import WalletAvatar from "../../../assets/walletAvatar.svg";
+import { Card, Empty, Input, Radio, Space } from "antd";
 import Section from "../../../component/Section";
 import LineChartSimple from "../../../component/LineChart";
 import { shorterAddress } from "../../../utils";
+import WalletAvatar from "../../../assets/walletAvatar.svg";
+
 import PieChartDonut from "../../../component/PieChart";
 import { TableBasic } from "../../../component/Table";
 import { useNavigate } from "react-router-dom";
+import useWallet from "./useWallet";
 
 const formItemStyle: React.CSSProperties = {
   borderWidth: 1,
@@ -32,33 +29,56 @@ const walletStyle: React.CSSProperties = {
   height: "85vh",
 };
 
-const walletAddress = "3YNyqvs6aGGtgtRKQ27ysP6GK5vVJ37vq86JWqyfyLD2";
+const tokenContainerStyle: React.CSSProperties = {
+  backgroundColor: "#171921",
+  borderWidth: 1,
+  borderColor: "#4244a",
+  borderStyle: "solid",
+  borderRadius: 12,
+};
 
-const walletPortfolio = [
-  { id: "1", avatarUrl: Solana, description: "Balance", title: "30000" },
-  { id: "2", avatarUrl: Nft, description: "NFTs", title: "20" },
-  { id: "3", avatarUrl: Coin, description: "Tokens", title: "300" },
-  { id: "4", avatarUrl: Tags, description: "Tags", title: "3", to: "tags" },
-  {
-    id: "5",
-    avatarUrl: Achivement,
-    description: "Goals",
-    title: "2",
-    to: "goal",
-  },
-];
+const piechartStyle: React.CSSProperties = {
+  width: "31%",
+  backgroundColor: "black",
+  borderRadius: 12,
+  // borderWidth: 1,
+  // borderColor: "#4244a",
+  // borderStyle: "solid",
+  justifyContent: "center",
+  alignItems: "center",
+  display: "flex",
+  flexDirection: "column",
+  position: "relative",
+};
+const lineChartStyle: React.CSSProperties = {
+  width: "68%",
+  backgroundColor: "black",
+  borderRadius: 12,
+  padding: 12,
+  // borderWidth: 1,
+  // borderColor: "#4244a",
+  // borderStyle: "solid",
+};
 
-const pageData = [
-  { name: new Date().toDateString(), receive: 3000, send: 2600, amt: 3400 },
-  { name: new Date().toDateString(), receive: 400, send: 4367, amt: 6400 },
-  { name: new Date().toDateString(), receive: 300, send: 1398, amt: 2400 },
-  { name: new Date().toDateString(), receive: 6000, send: 9800, amt: 2400 },
-  { name: new Date().toDateString(), receive: 278, send: 3908, amt: 2400 },
-  { name: new Date().toDateString(), receive: 1890, send: 4800, amt: 2400 },
-  { name: new Date().toDateString(), receive: 1890, send: 4800, amt: 2400 },
+const optionsWithDisabled = [
+  { label: "Top 5", value: 5 },
+  { label: "Top 10", value: 10 },
+  { label: "Top 15", value: 15 },
 ];
 
 export default function Wallet() {
+  const {
+    portfolioInfo,
+    allTokens,
+    topTokens,
+    searchParrams,
+    handleSearch,
+    handleCardClick,
+    handleSelectTopValue,
+    recentSearchWallet,
+    pieChartData,
+    lineChartData,
+  } = useWallet();
   const navigate = useNavigate();
 
   return (
@@ -72,17 +92,17 @@ export default function Wallet() {
             allowClear
             enterButton="Search"
             size="large"
-            onSearch={(value: string) => console.log(value)}
+            onSearch={(value: string) => handleSearch(value)}
             style={inputStyle}
             placeholder="search wallet address"
           />
         </Space>
       </section>
       <Section size={[48, 16]} title="Wallet Portfolio">
-        {walletPortfolio.map(({ avatarUrl, title, description, id, to }) => (
+        {portfolioInfo.map(({ avatarUrl, title, description, id, to }) => (
           <Card
             style={{ cursor: to ? "pointer" : "" }}
-            onClick={to !== undefined ? () => navigate(to) : to}
+            onClick={to !== undefined ? () => navigate({pathname:to,search:searchParrams.toString()}) : to}
             key={id}
           >
             <Card.Meta
@@ -93,28 +113,27 @@ export default function Wallet() {
           </Card>
         ))}
       </Section>
-      <Section title="Recent Wallets Search">
-        {new Array(20).fill(null).map((_, index) => (
-          <Card key={index} title={new Date().toDateString()}>
-            <Card.Meta
-              avatar={
-                <img style={{ width: 24 }} alt="tags" src={WalletAvatar} />
-              }
-              title={shorterAddress(walletAddress)}
-            />
-          </Card>
-        ))}
-      </Section>
+      {recentSearchWallet.length > 0 && (
+        <Section title="Recent Wallets Search">
+          {recentSearchWallet.map((item, index) => (
+            <Card
+              onClick={() => handleCardClick(item.address)}
+              key={index}
+              title={item.time}
+            >
+              <Card.Meta
+                avatar={
+                  <img style={{ width: 24 }} alt="tags" src={WalletAvatar} />
+                }
+                title={shorterAddress(item.address)}
+              />
+            </Card>
+          ))}
+        </Section>
+      )}
+
       <Section title="Token Portfolio" />
-      <div
-        style={{
-          backgroundColor: "#171921",
-          borderWidth: 1,
-          borderColor: "#4244a",
-          borderStyle: "solid",
-          borderRadius: 12,
-        }}
-      >
+      <div style={tokenContainerStyle}>
         <div
           style={{
             display: "flex",
@@ -124,33 +143,27 @@ export default function Wallet() {
             justifyContent: "space-between",
           }}
         >
-          <div
-            style={{
-              width: "30%",
-              backgroundColor: "#171921",
-              borderRadius: 12,
-              borderWidth: 1,
-              borderColor: "#4244a",
-              borderStyle: "solid",
-            }}
-          >
-            <PieChartDonut />
+          <div style={piechartStyle}>
+            <Radio.Group
+              style={{ position: "absolute", top: 10, zIndex: 1 }}
+              options={optionsWithDisabled}
+              onChange={handleSelectTopValue}
+              value={topTokens}
+              optionType="button"
+              buttonStyle="solid"
+            />
+            {pieChartData.length > 0 ? (
+              <PieChartDonut data={pieChartData.slice(0, topTokens)} />
+            ) : (
+              <Empty description={false} />
+            )}
           </div>
-          <div
-            style={{
-              width: "68%",
-              backgroundColor: "#171921",
-              borderRadius: 12,
-              borderWidth: 1,
-              borderColor: "#4244a",
-              borderStyle: "solid",
-            }}
-          >
-            <LineChartSimple data={pageData} />
+          <div style={lineChartStyle}>
+            <LineChartSimple data={lineChartData} />
           </div>
         </div>
         <div style={{ padding: 24 }}>
-          <TableBasic />
+          <TableBasic data={allTokens} />
         </div>
       </div>
     </div>
