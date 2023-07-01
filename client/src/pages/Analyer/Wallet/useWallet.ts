@@ -143,46 +143,42 @@ export default function useWallet() {
           })
         );
       }
-      if (walletPortfolio.details) {
-        const { sol_balance, num_tokens, num_nfts }: any =
-          walletPortfolio.details;
-          console.log(walletPortfolio.details);
-          
-        setPortfolio([
-          {
-            id: "1",
-            avatarUrl: Solana,
-            description: "Balance",
-            title: `${sol_balance || 0}`,
-          },
-          {
-            id: "2",
-            avatarUrl: Nft,
-            description: "NFTs",
-            title: `${num_nfts || 0}`,
-          },
-          {
-            id: "3",
-            avatarUrl: Coin,
-            description: "Tokens",
-            title: `${num_tokens || 0}`,
-          },
-          {
-            id: "4",
-            avatarUrl: Tags,
-            description: "Tags",
-            title: 0,
-            to: "tags",
-          },
-          {
-            id: "5",
-            avatarUrl: Achivement,
-            description: "Goals",
-            title: 0,
-            to: "goal",
-          },
-        ]);
-      }
+      const { sol_balance, num_tokens, num_nfts }: any =
+        walletPortfolio.details;
+      setPortfolio([
+        {
+          id: "1",
+          avatarUrl: Solana,
+          description: "Balance",
+          title: `${sol_balance || 0}`,
+        },
+        {
+          id: "2",
+          avatarUrl: Nft,
+          description: "NFTs",
+          title: `${num_nfts || 0}`,
+        },
+        {
+          id: "3",
+          avatarUrl: Coin,
+          description: "Tokens",
+          title: `${num_tokens || 0}`,
+        },
+        {
+          id: "4",
+          avatarUrl: Tags,
+          description: "Tags",
+          title: 0,
+          to: "tags",
+        },
+        {
+          id: "5",
+          avatarUrl: Achivement,
+          description: "Goals",
+          title: 0,
+          to: "goal",
+        },
+      ]);
 
       const { pie, line } = await prepareChartData(
         allTokens.details as unknown as any[],

@@ -107,22 +107,30 @@ export default function useTags() {
         formData.append("royalty", "99");
         formData.append("file", fileToMint);
       }
-      const res = await createNFT(formData);
+      try {
+        const res = await createNFT(formData);
 
-      if (res) {
+        if (res) {
+          messageApi.open({
+            type: "success",
+            content: "Transaction Created. Signing Transactions. Please Wait.",
+          });
+          const transaction = res.data.result.encoded_transaction; //encoded transaction
+          setSaveMinted(res.data.result.mint);
+          const ret_result = await signAndConfirmTransactionFe(
+            network,
+            transaction,
+            callback
+          ); //signing the encoded transaction
+          console.log(ret_result);
+          setDispResp(res.data);
+        }
+      } catch (error: any) {
         messageApi.open({
-          type: "success",
-          content: "Transaction Created. Signing Transactions. Please Wait.",
+          type: "error",
+          content: error.message,
         });
-        const transaction = res.data.result.encoded_transaction; //encoded transaction
-        setSaveMinted(res.data.result.mint);
-        const ret_result = await signAndConfirmTransactionFe(
-          network,
-          transaction,
-          callback
-        ); //signing the encoded transaction
-        console.log(ret_result);
-        setDispResp(res.data);
+        setLoading(false);
       }
     } else {
       messageApi.open({
