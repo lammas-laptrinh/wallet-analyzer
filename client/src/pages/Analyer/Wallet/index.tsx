@@ -71,6 +71,7 @@ export default function Wallet() {
     portfolioInfo,
     allTokens,
     topTokens,
+    contextHolder,
     searchParrams,
     handleSearch,
     handleCardClick,
@@ -83,6 +84,7 @@ export default function Wallet() {
 
   return (
     <div id="wallet-container" style={walletStyle}>
+      {contextHolder}
       <section>
         <h2 style={{ color: "white", margin: 8 }}>
           Search for wallet addresses to follow past transaction
@@ -102,7 +104,12 @@ export default function Wallet() {
         {portfolioInfo.map(({ avatarUrl, title, description, id, to }) => (
           <Card
             style={{ cursor: to ? "pointer" : "" }}
-            onClick={to !== undefined ? () => navigate({pathname:to,search:searchParrams.toString()}) : to}
+            onClick={
+              to !== undefined
+                ? () =>
+                    navigate({ pathname: to, search: searchParrams.toString() })
+                : to
+            }
             key={id}
           >
             <Card.Meta

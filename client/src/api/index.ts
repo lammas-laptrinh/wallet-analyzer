@@ -51,38 +51,37 @@ export async function getTransactionHistory(
     type: "UNKNOWN",
     details: null,
   };
-  console.log();
 
-  const ifCached = await getCacheData(network, address);
-  if (ifCached.success === true) {
-    data = {
-      success: true,
-      type: "TRANSACTIONS",
-      details: ifCached.details,
-    };
-  } else {
-    const config = {
-      method: "get",
-      maxBodyLength: Infinity,
-      url: `${endpoint}/wallet/transaction_history?network=${network}&wallet=${address}&tx_num=${txNum}`,
-      headers: {
-        "x-api-key": xKey,
-      },
-    };
-    try {
-      const res = await axios.request(config);
-      if (res.data.success === true) {
-        data = {
-          success: true,
-          type: "TRANSACTIONS",
-          details: res.data.result,
-        };
-        pushDatatoCache(network, res.data.result, address);
-      }
-    } catch (error) {
-      console.warn(error);
+  // const ifCached = await getCacheData(network, address);
+  // if (ifCached.success === true) {
+  //   data = {
+  //     success: true,
+  //     type: "TRANSACTIONS",
+  //     details: ifCached.details,
+  //   };
+  // } else {
+  const config = {
+    method: "get",
+    maxBodyLength: Infinity,
+    url: `${endpoint}/wallet/transaction_history?network=${network}&wallet=${address}&tx_num=${txNum}`,
+    headers: {
+      "x-api-key": xKey,
+    },
+  };
+  try {
+    const res = await axios.request(config);
+    if (res.data.success === true) {
+      data = {
+        success: true,
+        type: "TRANSACTIONS",
+        details: res.data.result,
+      };
+      pushDatatoCache(network, res.data.result, address);
     }
+  } catch (error) {
+    console.warn(error);
   }
+  // }
   return data;
 }
 
@@ -92,37 +91,30 @@ export async function getWalletPortfolio(network: string, address: string) {
     type: "UNKNOWN",
     details: null,
   };
-  const ifCached = await getCacheData(network, address);
-  if (ifCached.success === true) {
-    data = {
-      success: true,
-      type: "TOKEN",
-      details: ifCached.details,
-    };
-  } else {
-    try {
-      const config = {
-        method: "get",
-        maxBodyLength: Infinity,
-        url: `${endpoint}/wallet/get_portfolio?network=${network}&wallet=${address}`,
-        headers: {
-          "x-api-key": xKey,
-        },
-      };
-      const res = await axios.request(config);
 
-      if (res.data.success === true) {
-        data = {
-          success: true,
-          type: "TOKENS",
-          details: res.data.result,
-        };
-        pushDatatoCache(network, res.data.result, address);
-      }
-    } catch (error) {
-      console.warn(error);
+  try {
+    const config = {
+      method: "get",
+      maxBodyLength: Infinity,
+      url: `${endpoint}/wallet/get_portfolio?network=${network}&wallet=${address}`,
+      headers: {
+        "x-api-key": xKey,
+      },
+    };
+    const res = await axios.request(config);
+
+    if (res.data.success === true) {
+      data = {
+        success: true,
+        type: "TOKENS",
+        details: res.data.result,
+      };
+      pushDatatoCache(network, res.data.result, address);
     }
+  } catch (error) {
+    console.warn(error);
   }
+
   return data;
 }
 
