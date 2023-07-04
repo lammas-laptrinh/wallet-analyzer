@@ -1,6 +1,6 @@
 import { Button, Image, Space, Typography } from "antd";
 import React from "react";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 import useTags from "./useTags";
 import Loader from "../../component/Loader";
 
@@ -24,7 +24,7 @@ const subTitleStyles: React.CSSProperties = {
 };
 
 export default function Tags() {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const subTitleStyles2 = { ...subTitleStyles };
   subTitleStyles2.textAlign = "left";
@@ -54,7 +54,7 @@ export default function Tags() {
           Digital Artist
         </Typography.Title>
         <Space.Compact block style={{ justifyContent: "center" }}>
-          <Typography.Text
+          {/* <Typography.Text
             onClick={() => navigate(-1)}
             style={{
               color: "white",
@@ -64,7 +64,7 @@ export default function Tags() {
             }}
           >
             BACK
-          </Typography.Text>
+          </Typography.Text> */}
           <Typography.Title style={titleStyles} className="uppercase">
             MANAGE YOUR TAGS
           </Typography.Title>
@@ -95,6 +95,7 @@ export default function Tags() {
               </Typography.Text>
             </span>
             <Button
+              loading={!isAllowMint || isLoading}
               disabled={!isAllowMint}
               onClick={handleMintNFT}
               type="primary"
