@@ -71,9 +71,9 @@ export default function useWallet() {
 
     setRecentSearchWallet(cloneValue);
     setWalletAddress(address);
-    setSearchParrams(`wl=${address}`);
+    searchParrams.set("wl", address);
+    setSearchParrams(searchParrams);
     localStorage.setItem("RECENT_WALLET_SEARCH", JSON.stringify(cloneValue));
-    messageApi.open({ type: "success", content: "search successful" });
   };
   const prepareChartData = async (
     allTokens: any[],

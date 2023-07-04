@@ -64,6 +64,7 @@ export default function MainLayout() {
                 localStorage.setItem("currentWallet", walletAddress);
               } else {
                 searchParams.set("wl", currentWallet);
+                searchParams.set("network", "devnet");
                 setSearchParams(searchParams);
               }
             }}
