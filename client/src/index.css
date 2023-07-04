@@ -25,7 +25,7 @@
   text-transform: uppercase;
 }
 
-.tag-image-container > div:not(:last-child) {
+.tag-image-container>div:not(:last-child) {
   margin-right: 12px !important;
 }
 
@@ -175,5 +175,19 @@ button:focus-visible {
 
   button {
     background-color: #f9f9f9;
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.8s linear;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
   }
 }

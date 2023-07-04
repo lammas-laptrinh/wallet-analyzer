@@ -25,7 +25,7 @@ export default function Section({
   size = [8, 16],
 }: SectionProps) {
   return (
-    <section>
+    <section className="fade-in">
       <h2 style={titleStyles}>{title}</h2>
       <Space className="section-content" style={contentStyles} size={size}>
         {children}

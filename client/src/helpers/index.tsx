@@ -49,15 +49,9 @@ export const HeaderItems: MenuItem[] = [
 ];
 
 export const SiderItems: MenuItem[] = [
-  getItem("Wallet Info", "1", <WalletOutlined />),
-  getItem("Smart money", "2", <PieChartOutlined />, undefined, true),
-  getItem(
-    "Transactions",
-    "3",
-    <TransactionOutlined />,
-    undefined,
-    true
-  ),
+  getItem("Wallet Info", "/", <WalletOutlined />),
+  getItem("Tags", "tags", <PieChartOutlined />),
+  getItem("Goals", "goal", <TransactionOutlined />),
   // getItem("Navigation One", "sub1", <AppstoreOutlined />, [
   //   getItem("Option 5", "5"),
   //   getItem("Option 6", "6"),

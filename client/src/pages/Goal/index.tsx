@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { FileDoneOutlined, FileProtectOutlined } from "@ant-design/icons";
 import { Card, Col, Radio, RadioChangeEvent, Row, Space } from "antd";
 import { Typography } from "antd";
@@ -53,7 +54,7 @@ export default function Goal() {
         }
       });
     }
-  }, []);
+  }, [goals, searchParams]);
   return (
     <Space direction="vertical" size={[0, 24]} style={goalContainerStyle}>
       <Title style={textStyle} level={2}>
@@ -85,6 +86,7 @@ export default function Goal() {
                 style={{ width: "100%" }}
               >
                 <Card
+                  className="fade-in"
                   cover={
                     <img
                       height={200}

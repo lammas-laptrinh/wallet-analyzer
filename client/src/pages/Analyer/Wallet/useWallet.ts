@@ -3,8 +3,8 @@ import React from "react";
 import Coin from "../../../assets/coin.png";
 import Nft from "../../../assets/nft.png";
 import Solana from "../../../assets/solana2.png";
-import Achivement from "../../../assets/achivement.png";
-import Tags from "../../../assets/tags.png";
+// import Achivement from "../../../assets/achivement.png";
+// import Tags from "../../../assets/tags.png";
 import {
   getAllTokens,
   getTransactionHistory,
@@ -29,7 +29,7 @@ type RecentSearch = {
 
 export default function useWallet() {
   const [messageApi, contextHolder] = message.useMessage();
-
+  const [isLoading, setLoading] = React.useState(false);
   const [searchParrams, setSearchParrams] = useSearchParams();
 
   const network = searchParrams.get("network") || NETWORK.DEV_NET;
@@ -94,8 +94,6 @@ export default function useWallet() {
       line:
         transactionsHistory !== null
           ? transactionsHistory.map((transaction: any) => {
-              console.log(transaction);
-
               if (transaction.parsed) {
                 const { timestamp, actions } = transaction.parsed;
                 const countTransaction = actions.filter((action: any) =>
@@ -112,87 +110,90 @@ export default function useWallet() {
           : [],
     };
   };
-  const initApp = React.useCallback(async (walletAddress: string) => {
-    const promiseAllToken = getAllTokens(network, walletAddress);
-    const promisWalletPortfolio = getWalletPortfolio(network, walletAddress);
-    const promiseTransactionsHistory = getTransactionHistory(
-      network,
-      walletAddress,
-      15
-    );
-    try {
-      const [walletPortfolio, allTokens, transactionsHistory] =
-        await Promise.all([
-          promisWalletPortfolio,
-          promiseAllToken,
-          promiseTransactionsHistory,
-        ]);
-
-      if (allTokens.details) {
-        const allTokensInfo = allTokens.details as Array<any>;
-        setAllTokens(
-          allTokensInfo.map((token: any) => {
-            return {
-              key: token.address,
-              name: token.info.name,
-              address: token.address,
-              balance: token.balance,
-              symbol: token.info.symbol,
-              image: token.info.image,
-            };
-          })
+  const initApp = React.useCallback(
+    async (walletAddress: string) => {
+      setLoading(true);
+      try {
+        const walletPortfolio = await getWalletPortfolio(
+          network,
+          walletAddress
         );
+        if (walletPortfolio.details) {
+          const { sol_balance, num_tokens, num_nfts }: any =
+            walletPortfolio.details;
+          setPortfolio([
+            {
+              id: "1",
+              avatarUrl: Solana,
+              description: "Balance",
+              title: `${sol_balance || 0}`,
+            },
+            {
+              id: "2",
+              avatarUrl: Nft,
+              description: "NFTs",
+              title: `${num_nfts || 0}`,
+            },
+            {
+              id: "3",
+              avatarUrl: Coin,
+              description: "Tokens",
+              title: `${num_tokens || 0}`,
+            },
+            // {
+            //   id: "4",
+            //   avatarUrl: Tags,
+            //   description: "Tags",
+            //   title: 0,
+            //   to: "tags",
+            // },
+            // {
+            //   id: "5",
+            //   avatarUrl: Achivement,
+            //   description: "Goals",
+            //   title: 0,
+            //   to: "goal",
+            // },
+          ]);
+        }
+        setLoading(false);
+        const allTokens = await getAllTokens(network, walletAddress);
+
+        if (allTokens.details) {
+          const allTokensInfo = allTokens.details as Array<any>;
+          setAllTokens(
+            allTokensInfo.map((token: any) => {
+              return {
+                key: token.address,
+                name: token.info.name,
+                address: token.address,
+                balance: token.balance,
+                symbol: token.info.symbol,
+                image: token.info.image,
+              };
+            })
+          );
+        }
+        const transactionsHistory = await getTransactionHistory(
+          network,
+          walletAddress,
+          15
+        );
+        const { pie, line } = await prepareChartData(
+          allTokens.details as unknown as any[],
+          transactionsHistory.details as unknown as any[]
+        );
+
+        setPieChartData(pie);
+        setLineChartData(line);
+      } catch (error: any) {
+        console.log("error", error);
+        setLoading(false);
+        messageApi.open({ type: "error", content: error.message });
       }
-      const { sol_balance, num_tokens, num_nfts }: any =
-        walletPortfolio.details;
-      setPortfolio([
-        {
-          id: "1",
-          avatarUrl: Solana,
-          description: "Balance",
-          title: `${sol_balance || 0}`,
-        },
-        {
-          id: "2",
-          avatarUrl: Nft,
-          description: "NFTs",
-          title: `${num_nfts || 0}`,
-        },
-        {
-          id: "3",
-          avatarUrl: Coin,
-          description: "Tokens",
-          title: `${num_tokens || 0}`,
-        },
-        {
-          id: "4",
-          avatarUrl: Tags,
-          description: "Tags",
-          title: 0,
-          to: "tags",
-        },
-        {
-          id: "5",
-          avatarUrl: Achivement,
-          description: "Goals",
-          title: 0,
-          to: "goal",
-        },
-      ]);
-
-      const { pie, line } = await prepareChartData(
-        allTokens.details as unknown as any[],
-        transactionsHistory.details as unknown as any[]
-      );
-
-      setPieChartData(pie);
-      setLineChartData(line);
-    } catch (error: any) {
-      console.log("error", error);
-
-      messageApi.open({ type: "error", content: error.message });
-    }
-  }, []);
+    },
+    [messageApi, network]
+  );
 
   React.useEffect(() => {
     const value = localStorage.getItem("RECENT_WALLET_SEARCH");
@@ -216,6 +217,7 @@ export default function useWallet() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentWalletAddress]);
   return {
+    isLoading,
     allTokens,
     contextHolder,
     pieChartData,

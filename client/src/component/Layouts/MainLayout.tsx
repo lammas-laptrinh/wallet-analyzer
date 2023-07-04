@@ -4,9 +4,9 @@ import Sider from "antd/es/layout/Sider";
 import Logo from "../../assets/logo2.png";
 import { SiderItems, HeaderItems } from "../../helpers";
 import React from "react";
-import { Link, Outlet, useSearchParams } from "react-router-dom";
+import { Link, Outlet, useNavigate, useSearchParams } from "react-router-dom";
 import { WalletOutlined } from "@ant-design/icons";
-import { onConnectWallet } from "../../utils";
+import { onConnectWallet, shorterAddress } from "../../utils";
 
 const headerStyle: React.CSSProperties = {
   display: "flex",
@@ -23,7 +23,8 @@ const siderStyle: React.CSSProperties = {
 
 export default function MainLayout() {
   const [searchParams, setSearchParams] = useSearchParams();
-
+  const currentWallet = localStorage.getItem("currentWallet");
+  const navigate = useNavigate();
   return (
     <Layout>
       <Sider style={siderStyle}>
@@ -33,6 +34,9 @@ export default function MainLayout() {
           </Link>
         </div>
         <Menu
+          onClick={({ key }) =>
+            navigate({ pathname: key, search: searchParams.toString() })
+          }
           defaultSelectedKeys={["1"]}
           defaultOpenKeys={["sub1"]}
           mode="inline"
@@ -51,20 +55,24 @@ export default function MainLayout() {
             mode="horizontal"
             items={HeaderItems}
           />
-          (
-          {searchParams.get("wl") === null && (
-            <Button
-              onClick={async () => {
+          ( (
+          <Button
+            onClick={async () => {
+              if (currentWallet === null) {
                 const walletAddress = await onConnectWallet();
                 setSearchParams(`wl=${walletAddress}&network=devnet`);
-              }}
-              icon={<WalletOutlined />}
-              type="primary"
-            >
-              Conenct
-            </Button>
-          )}
-          )
+                localStorage.setItem("currentWallet", walletAddress);
+              } else {
+                searchParams.set("wl", currentWallet);
+                setSearchParams(searchParams);
+              }
+            }}
+            icon={<WalletOutlined />}
+            type="primary"
+          >
+            {currentWallet === null ? "Conenct" : shorterAddress(currentWallet)}
+          </Button>
+          ) )
         </Header>
         <Content style={contentStyle}>
           <Outlet />

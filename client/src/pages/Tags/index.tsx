@@ -119,6 +119,7 @@ export default function Tags() {
             <Space.Compact size="middle">
               {tags.map((tag, index) => (
                 <div
+                  className="fade-in"
                   onClick={() => handleSelectedSrc(tag)}
                   key={index}
                   style={{
